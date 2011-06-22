@@ -394,8 +394,13 @@ module RailsAdmin
       end
     end
 
+    # Patch : rails_admin/app/controllers/application_controller.rb to get the
+    # attributes has key from the object's class instead of @abstract_model's
+    # class. It helps us to update objects of child classes. Remove patch if new
+    # commit in the gem fixes this.
     def get_attributes
-      @attributes = params[@abstract_model.to_param.singularize.gsub('~','_')] || {}
+      attr_params = @object ? @object.class.name.underscore.gsub(/[^a-z0-9]/i,'_') : @abstract_model.to_param.singularize.gsub('~','_')
+      @attributes = params[attr_params] || {}
       @attributes.each do |key, value|
         # Deserialize the attribute if attribute is serialized
         if @abstract_model.model.serialized_attributes.keys.include?(key) and value.is_a? String

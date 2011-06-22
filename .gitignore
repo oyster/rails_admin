@@ -24,3 +24,4 @@ spec/dummy_app/db/schema.rb
 spec/dummy_app/log/*.log
 spec/dummy_app/Gemfile.lock
 tmp/**/*
+nbproject
